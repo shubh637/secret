@@ -16,7 +16,7 @@ const userschema=new mongoose.Schema({
     email:String,
     password:String
 })
-console.log(process.env.API_KEY);
+console.log(process.env.API_KEY);//importing the value from environment variable.
 userschema.plugin(encrypt,{secret:process.env.SECRET,encryptedFields: ["password"]});//plugin the encryptand secret for the specific field
 const User=new mongoose.model("User",userschema);
 
