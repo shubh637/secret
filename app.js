@@ -87,14 +87,17 @@ app.get("/login", function (req, res) {
 app.get("/register", function (req, res) {
   res.render("register");
 });
- 
-app.get("/secrets", function (req, res) {
-User.find({"secret":{$ne:null}},function(err,foundUser){
-  if(foundUser){
-    res.render("secrets.ejs",{usersWithSecrets:foundUser});
-  }
-})
+ //secrets
+app.get("/secrets",function(req,res){
+  User.find({"secret":{$ne:null}})
+  .then(function (foundUsers) {
+    res.render("secrets",{usersWithSecrets:foundUsers});
+    })
+  .catch(function (err) {
+    console.log(err);
+    })
 });
+
  
 app.get("/logout", function (req, res, next) {
   req.logout()
@@ -146,7 +149,7 @@ app.get("/submit",function(req,res){
 });
 app.post("/submit",function(req,res){
   const submittedSecret=req.body.secret;
-  User.findById((req.user.id),function(err,foundUser){
+  User.findOne({ email:req.body.username},function(err,foundUser){
     if(err){
       console.log(err);
     }
